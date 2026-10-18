@@ -1,0 +1,39 @@
+# Deploy the current main branch to the production Render service.
+# Trigger: manual button in the GitHub Actions tab (workflow_dispatch).
+# Safety: requires typing "deploy" to confirm.
+#
+# Prerequisites (one-time setup):
+#   1. Disable auto-deploy on the production Render service.
+#   2. Create a Deploy Hook for it (Render Dashboard → Settings).
+#   3. Add the hook URL as a GitHub Actions secret: RENDER_DEPLOY_HOOK_URL
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "deploy" to confirm production deployment'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-production:
+    name: Trigger production deploy
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'deploy'
+    steps:
+      - name: Trigger Render Production Deploy Hook
+        run: |
+          response=$(curl -sS -o /dev/null -w "%{http_code}" \
+            -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}")
+
+          echo "HTTP status: $response"
+
+          if [ "$response" -eq 200 ] || [ "$response" -eq 202 ]; then
+            echo "✅ Production deploy triggered — live at thavalon.onrender.com"
+          else
+            echo "❌ Failed to trigger production deploy (HTTP $response)"
+            exit 1
+          fi
