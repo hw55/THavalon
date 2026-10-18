@@ -5,7 +5,7 @@
 # Prerequisites (one-time setup):
 #   1. Disable auto-deploy on the production Render service.
 #   2. Create a Deploy Hook for it (Render Dashboard → Settings).
-#   3. Add the hook URL as a GitHub Actions secret: RENDER_DEPLOY_HOOK_URL
+#   3. Add the hook URL as a GitHub Actions secret: RENDER_PROD_DEPLOY_HOOK_URL
 name: Deploy to Production
 
 on:
@@ -27,7 +27,7 @@ jobs:
       - name: Trigger Render Production Deploy Hook
         run: |
           response=$(curl -sS -o /dev/null -w "%{http_code}" \
-            -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}")
+            -X POST "${{ secrets.RENDER_PROD_DEPLOY_HOOK_URL }}")
 
           echo "HTTP status: $response"
 

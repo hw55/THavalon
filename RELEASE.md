@@ -63,7 +63,7 @@ Staging is deployed first to test; production is deployed after verification.
 
 | Secret | Purpose |
 |---|---|
-| `RENDER_DEPLOY_HOOK_URL` | Deploy hook URL for the production Render service |
+| `RENDER_PROD_DEPLOY_HOOK_URL` | Deploy hook URL for the production Render service |
 | `RENDER_STAGING_DEPLOY_HOOK_URL` | Deploy hook URL for the staging Render service |
 
 ## Setup Checklist
@@ -72,5 +72,5 @@ Staging is deployed first to test; production is deployed after verification.
 - [ ] Create Deploy Hook for production (Render Dashboard → Settings)
 - [ ] Create a second free Render web service `thavalon-staging`, auto-deploy OFF
 - [ ] Create Deploy Hook for staging
-- [ ] Add `RENDER_DEPLOY_HOOK_URL` as a GitHub Actions secret
+- [ ] Add `RENDER_PROD_DEPLOY_HOOK_URL` as a GitHub Actions secret
 - [ ] Add `RENDER_STAGING_DEPLOY_HOOK_URL` as a GitHub Actions secret
